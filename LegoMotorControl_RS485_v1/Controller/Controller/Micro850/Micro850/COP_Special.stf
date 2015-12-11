@@ -1,0 +1,8 @@
+FUNCTION_BLOCK COP_Special
+IF Start THEN
+FOR i := 0 TO 6 DO
+	output[i]:=ANY_TO_WORD(input[(i+1)]);
+END_FOR;
+END_IF;
+
+END_FUNCTION_BLOCK

@@ -1,0 +1,176 @@
+PROGRAM Prog1
+(* Config for AWT *)
+input.Channel:=5;
+input.Length:=7;
+input.Cancel:=false;
+(* Config for ARD *)
+readinput.Channel:=5;
+readinput.Length:=2;
+readinput.Cancel:=false;
+(* Config for ACB *)
+input_acb.Channel:=5;
+input_acb.TriggerType:=1;
+(* Config for ACL *)
+input_acl.Channel:=5;
+input_acl.RXBuffer:=TRUE;
+
+motorA_move_lower := ANY_TO_BYTE(AND_MASK(motorA_move,16#FF));
+motorA_move_upper := ANY_TO_BYTE(AND_MASK((SHR(motorA_move,8)),16#FF));
+
+motorB_move_lower := ANY_TO_BYTE(AND_MASK(motorB_move,16#FF));
+motorB_move_upper := ANY_TO_BYTE(AND_MASK((SHR(motorB_move,8)),16#FF));
+(*
+//RESET
+0x55 0xFF 0x1F 0x00 0x00 0x12 0x94
+0x55 0x01 0x1F 0x00 0x00 0x2F 0x83
+
+//A FW
+0x55 0xFF 0x01 0x00 0x00 0x4A 0xF6
+//A BW
+0x55 0xFF 0x02 0x00 0x00 0x13 0xA6
+//A STOP
+0x55 0xFF 0x03 0x00 0x00 0x24 0x96
+//B FW
+0x55 0xFF 0x04 0x00 0x00 0xA1 0x06
+//B BW
+0x55 0xFF 0x05 0x00 0x00 0x96 0x36
+//B STOP
+0x55 0xFF 0x06 0x00 0x00 0xCF 0x66
+ *)
+ 
+CASE SendCmd OF
+	1: 
+		(* 0x55 0xFF 0x01 0x00 0x00 0x4A 0xF6 *)
+		(* Motor A Forward *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#01;
+		CommandTest[4]:=motorA_move_lower;
+		CommandTest[5]:=motorA_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	2:
+		(* 0x55 0xFF 0x03 0x00 0x00 0x24 0x96 *)
+		(* Motor A BW*)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#02;
+		CommandTest[4]:= motorA_move_lower;
+		CommandTest[5]:= motorA_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	3:		
+		(* 0x55 0xFF 0x1F 0x00 0x00 0x12 0x94 *)
+		(* ReadCounts *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#1F;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	4:		
+		(* 0x55 0xFF 0x03 0x00 0x00 0x24 0x96 *)
+		(* Motor A Stop *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#03;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	5:		
+		(* 0x55 0xFF 0x04 0x00 0x00 0xA1 0x06 *)
+		(* Motor B Forward *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#04;
+		CommandTest[4]:=motorB_move_lower;
+		CommandTest[5]:=motorB_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	6:		
+		(* 0x55 0xFF 0x05 0x00 0x00 0x96 0x36 *)
+		(* Motor B BW *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#05;
+		CommandTest[4]:=motorB_move_lower;
+		CommandTest[5]:=motorB_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	7:		
+		(* 0x55 0xFF 0x06 0x00 0x00 0xCF 0x66 *)
+		(* Motor B Stop *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#06;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+ELSE
+		CommandTest[1]:=16#00;
+		CommandTest[2]:=16#00;
+		CommandTest[3]:=16#00;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		Start_COP:=FALSE;
+		Start_CRC:=FALSE;
+		Start_GenBytes:=FALSE;
+END_CASE;
+
+COP_Special_1(CommandTest,Start_COP);
+Start_COP:=TRUE;
+Generate_CRC_1(COP_Special_1.output,Start_CRC);
+Start_CRC:=TRUE;
+Generate_Bytes_1(Generate_CRC_1.output,Start_GenBytes);
+Start_GenBytes:=TRUE;
+CommandTest[6]:=Generate_Bytes_1.upper_byte;
+CommandTest[7]:=Generate_Bytes_1.lower_byte;
+
+
+if(SendCmd<5) AND SendCmd<>0 THEN
+	sendCommand:=True;
+END_IF;
+
+source:=CommandTest;
+
+(* AWT - Sends command to PIC *)
+AWT_1(sendCommand,input,source);
+sendCommand:=False;
+SendCmd:=0;
+num:=AWT_1.NumChar;
+error:=AWT_1.Error;
+id:=AWT_1.ErrorID;
+
+
+(* ACB - Reads buffer *)
+ACB_1(TRUE, input_acb);
+(* Checks buffer = 2 char before reading *)
+if(ACB_1.Characters=2) THEN
+ReadTest:=True;
+ELSE
+END_IF;
+
+(* ARD - Read Motor Counts, this runs when Read_counts is TRUE*)
+ARD_1(ReadTest, readinput);
+ReadTest:=False;
+errorid2 := ard_1.ErrorID;
+des := ARD_1.Destination;
+error2 := ARD_1.Error;
+num2 := ard_1.NumChar;
+
+(* ACL - Clears buffer, currently not used *)
+ACL_1(clear_buffer,input_acl);
+
+(* Adds 2 bytes to get the motor counts *)
+motorA_Count :=  OR_MASK(( SHL(ANY_to_dint(des[2]),8)),ANY_to_dint(des[1]));
+
+(* Auto Reset Timer - Not used *)
+TON_1(reset,T#100ms);
+reset:=NOT TON_1.Q;
+
+END_PROGRAM

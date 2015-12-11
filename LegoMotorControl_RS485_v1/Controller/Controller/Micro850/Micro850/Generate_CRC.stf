@@ -1,0 +1,20 @@
+FUNCTION_BLOCK Generate_CRC
+IF start THEN
+remainder := 0;
+FOR i := 0 TO 6 DO
+	mask := 16#80;
+	FOR j := 0 TO 7 DO
+		msBit := ANY_TO_WORD(AND_MASK(ANY_TO_dint(remainder),16#8000));
+		remainder := ANY_TO_WORD(SHL(ANY_TO_dint(remainder),1));
+		IF (AND_MASK(ANY_TO_dint(input[i]),ANY_TO_dint(mask))<> 0) THEN
+			remainder := ANY_TO_WORD(OR_MASK(ANY_TO_dint(remainder),16#0001));
+		END_IF;
+		mask:= ANY_TO_WORD((SHR(ANY_TO_dint(mask),1)));
+		IF (msBit<> 0) THEN
+			remainder := ANY_TO_WORD(XOR_MASK(ANY_TO_dint(remainder),16#1021));
+		END_IF;
+	END_FOR;
+END_FOR;
+output:=remainder;
+END_IF;
+END_FUNCTION_BLOCK

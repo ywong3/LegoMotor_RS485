@@ -1,0 +1,6 @@
+FUNCTION_BLOCK Generate_Bytes
+IF Start THEN
+lower_byte := ANY_TO_BYTE(AND_MASK(ANY_TO_DINT(input),16#FF));
+upper_byte := ANY_TO_BYTE(AND_MASK((SHR(ANY_TO_DINT(input),8)),16#FF));
+END_IF;
+END_FUNCTION_BLOCK

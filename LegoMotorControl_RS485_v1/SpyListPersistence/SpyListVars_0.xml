@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SpyListVars_0>
+  <ConfigurationInfo>
+    <SpyListName>Spy List Name[1]</SpyListName>
+    <ConfigFileVersion>3</ConfigFileVersion>
+    <ToolWindowPaneIndex>0</ToolWindowPaneIndex>
+    <DefaultRefreshRateMonitoring>100</DefaultRefreshRateMonitoring>
+  </ConfigurationInfo>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Prog1.ACB_1</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Prog1.motorA_Count</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Prog1.SendCmd</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Prog1.motorA_move</FullName>
+  </Variable>
+</SpyListVars_0>
