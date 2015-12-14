@@ -5,7 +5,7 @@ input.Length:=7;
 input.Cancel:=false;
 (* Config for ARD *)
 readinput.Channel:=5;
-readinput.Length:=2;
+readinput.Length:=4;
 readinput.Cancel:=false;
 (* Config for ACB *)
 input_acb.Channel:=5;
@@ -60,11 +60,11 @@ CASE SendCmd OF
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
 	3:		
-		(* 0x55 0xFF 0x1F 0x00 0x00 0x12 0x94 *)
+		(* 0x55 0xFF 0x07 0x00 0x00 0xF8 0x56 *)
 		(* ReadCounts *)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
-		CommandTest[3]:=16#1F;
+		CommandTest[3]:=16#07;
 		CommandTest[4]:=16#00;
 		CommandTest[5]:=16#00;
 		CommandTest[6]:=16#00;
@@ -132,7 +132,7 @@ CommandTest[6]:=Generate_Bytes_1.upper_byte;
 CommandTest[7]:=Generate_Bytes_1.lower_byte;
 
 
-if(SendCmd<5) AND SendCmd<>0 THEN
+if(SendCmd<10) AND SendCmd<>0 THEN
 	sendCommand:=True;
 END_IF;
 
@@ -149,8 +149,8 @@ id:=AWT_1.ErrorID;
 
 (* ACB - Reads buffer *)
 ACB_1(TRUE, input_acb);
-(* Checks buffer = 2 char before reading *)
-if(ACB_1.Characters=2) THEN
+(* Checks buffer = 4 char before reading *)
+if(ACB_1.Characters=4) THEN
 ReadTest:=True;
 ELSE
 END_IF;
@@ -168,6 +168,7 @@ ACL_1(clear_buffer,input_acl);
 
 (* Adds 2 bytes to get the motor counts *)
 motorA_Count :=  OR_MASK(( SHL(ANY_to_dint(des[2]),8)),ANY_to_dint(des[1]));
+motorB_Count :=  OR_MASK(( SHL(ANY_to_dint(des[4]),8)),ANY_to_dint(des[3]));
 
 (* Auto Reset Timer - Not used *)
 TON_1(reset,T#100ms);

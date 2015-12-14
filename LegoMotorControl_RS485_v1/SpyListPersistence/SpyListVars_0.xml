@@ -7,9 +7,6 @@
     <DefaultRefreshRateMonitoring>100</DefaultRefreshRateMonitoring>
   </ConfigurationInfo>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.ACB_1</FullName>
-  </Variable>
-  <Variable>
     <FullName>Controller.Micro850.Micro850.Prog1.motorA_Count</FullName>
   </Variable>
   <Variable>
@@ -17,5 +14,11 @@
   </Variable>
   <Variable>
     <FullName>Controller.Micro850.Micro850.Prog1.motorA_move</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Prog1.motorB_Count</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Prog1.motorB_move</FullName>
   </Variable>
 </SpyListVars_0>
