@@ -19,6 +19,13 @@ motorA_move_upper := ANY_TO_BYTE(AND_MASK((SHR(motorA_move,8)),16#FF));
 
 motorB_move_lower := ANY_TO_BYTE(AND_MASK(motorB_move,16#FF));
 motorB_move_upper := ANY_TO_BYTE(AND_MASK((SHR(motorB_move,8)),16#FF));
+
+motorA_move_to_lower := ANY_TO_BYTE(AND_MASK(motorA_move_to,16#FF));
+motorA_move_to_upper := ANY_TO_BYTE(AND_MASK((SHR(motorA_move_to,8)),16#FF));
+
+motorB_move_to_lower := ANY_TO_BYTE(AND_MASK(motorB_move_to,16#FF));
+motorB_move_to_upper := ANY_TO_BYTE(AND_MASK((SHR(motorB_move_to,8)),16#FF));
+
 (*
 //RESET
 0x55 0xFF 0x1F 0x00 0x00 0x12 0x94
@@ -60,16 +67,6 @@ CASE SendCmd OF
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
 	3:		
-		(* 0x55 0xFF 0x07 0x00 0x00 0xF8 0x56 *)
-		(* ReadCounts *)
-		CommandTest[1]:=16#55;
-		CommandTest[2]:=16#FF;
-		CommandTest[3]:=16#07;
-		CommandTest[4]:=16#00;
-		CommandTest[5]:=16#00;
-		CommandTest[6]:=16#00;
-		CommandTest[7]:=16#00;
-	4:		
 		(* 0x55 0xFF 0x03 0x00 0x00 0x24 0x96 *)
 		(* Motor A Stop *)
 		CommandTest[1]:=16#55;
@@ -79,7 +76,7 @@ CASE SendCmd OF
 		CommandTest[5]:=16#00;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	5:		
+	4:		
 		(* 0x55 0xFF 0x04 0x00 0x00 0xA1 0x06 *)
 		(* Motor B Forward *)
 		CommandTest[1]:=16#55;
@@ -89,7 +86,7 @@ CASE SendCmd OF
 		CommandTest[5]:=motorB_move_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	6:		
+	5:		
 		(* 0x55 0xFF 0x05 0x00 0x00 0x96 0x36 *)
 		(* Motor B BW *)
 		CommandTest[1]:=16#55;
@@ -99,7 +96,7 @@ CASE SendCmd OF
 		CommandTest[5]:=motorB_move_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	7:		
+	6:		
 		(* 0x55 0xFF 0x06 0x00 0x00 0xCF 0x66 *)
 		(* Motor B Stop *)
 		CommandTest[1]:=16#55;
@@ -107,6 +104,34 @@ CASE SendCmd OF
 		CommandTest[3]:=16#06;
 		CommandTest[4]:=16#00;
 		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	7:		
+		(* 0x55 0xFF 0x07 0x00 0x00 0xF8 0x56 *)
+		(* ReadCounts *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#07;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	8:
+		(* Motor A Move To Position *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#08;
+		CommandTest[4]:=motorA_move_to_lower;
+		CommandTest[5]:=motorA_move_to_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+	9:
+		(* Motor B Move To Position *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#09;
+		CommandTest[4]:=motorB_move_to_lower;
+		CommandTest[5]:=motorB_move_to_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
 ELSE

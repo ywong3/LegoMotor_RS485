@@ -739,6 +739,9 @@ Controller.Micro850.Micro850.Prog1.motorA_Count
 Controller.Micro850.Micro850.Prog1.motorA_FW	
 Controller.Micro850.Micro850.Prog1.motorA_move	
 Controller.Micro850.Micro850.Prog1.motorA_move_lower	
+Controller.Micro850.Micro850.Prog1.motorA_move_to	
+Controller.Micro850.Micro850.Prog1.motorA_move_to_lower	
+Controller.Micro850.Micro850.Prog1.motorA_move_to_upper	
 Controller.Micro850.Micro850.Prog1.motorA_move_upper	
 Controller.Micro850.Micro850.Prog1.motorA_pos	
 Controller.Micro850.Micro850.Prog1.motorA_Stop	
@@ -746,6 +749,9 @@ Controller.Micro850.Micro850.Prog1.motorB_Count
 Controller.Micro850.Micro850.Prog1.motorB_FW	
 Controller.Micro850.Micro850.Prog1.motorB_move	
 Controller.Micro850.Micro850.Prog1.motorB_move_lower	
+Controller.Micro850.Micro850.Prog1.motorB_move_to	
+Controller.Micro850.Micro850.Prog1.motorB_move_to_lower	
+Controller.Micro850.Micro850.Prog1.motorB_move_to_upper	
 Controller.Micro850.Micro850.Prog1.motorB_move_upper	
 Controller.Micro850.Micro850.Prog1.motorB_Stop	
 Controller.Micro850.Micro850.Prog1.num	
