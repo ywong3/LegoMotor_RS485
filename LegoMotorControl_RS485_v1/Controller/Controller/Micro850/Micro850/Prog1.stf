@@ -5,7 +5,7 @@ input.Length:=7;
 input.Cancel:=false;
 (* Config for ARD *)
 readinput.Channel:=5;
-readinput.Length:=4;
+readinput.Length:=8;
 readinput.Cancel:=false;
 (* Config for ACB *)
 input_acb.Channel:=5;
@@ -174,8 +174,8 @@ id:=AWT_1.ErrorID;
 
 (* ACB - Reads buffer *)
 ACB_1(TRUE, input_acb);
-(* Checks buffer = 4 char before reading *)
-if(ACB_1.Characters=4) THEN
+(* Checks buffer = 8 char before reading *)
+if(ACB_1.Characters=8) THEN
 ReadTest:=True;
 ELSE
 END_IF;
@@ -192,8 +192,9 @@ num2 := ard_1.NumChar;
 ACL_1(clear_buffer,input_acl);
 
 (* Adds 2 bytes to get the motor counts *)
-motorA_Count :=  OR_MASK(( SHL(ANY_to_dint(des[2]),8)),ANY_to_dint(des[1]));
-motorB_Count :=  OR_MASK(( SHL(ANY_to_dint(des[4]),8)),ANY_to_dint(des[3]));
+motorA_Count :=  OR_MASK(( SHL(ANY_TO_DINT(des[4]),24)),OR_MASK(( SHL(ANY_TO_DINT(des[3]),16)),OR_MASK(( SHL(ANY_TO_DINT(des[2]),8)),ANY_TO_DINT(des[1]))));
+motorB_Count :=  OR_MASK(( SHL(ANY_TO_DINT(des[8]),24)),OR_MASK(( SHL(ANY_TO_DINT(des[7]),16)),OR_MASK(( SHL(ANY_TO_DINT(des[6]),8)),ANY_TO_DINT(des[5]))));
+(*motorB_Count :=  OR_MASK(( SHL(ANY_TO_DINT(des[4]),8)),ANY_TO_DINT(des[3]));*)
 
 (* Auto Reset Timer - Not used *)
 TON_1(reset,T#100ms);
