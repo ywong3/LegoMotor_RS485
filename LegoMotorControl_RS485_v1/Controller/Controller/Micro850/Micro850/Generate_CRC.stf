@@ -1,7 +1,7 @@
 FUNCTION_BLOCK Generate_CRC
 IF start THEN
 remainder := 0;
-FOR i := 0 TO 6 DO
+FOR i := 0 TO 8 DO
 	mask := 16#80;
 	FOR j := 0 TO 7 DO
 		msBit := ANY_TO_WORD(AND_MASK(ANY_TO_dint(remainder),16#8000));

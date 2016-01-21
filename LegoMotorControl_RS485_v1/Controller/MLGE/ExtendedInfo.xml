@@ -3,9 +3,6 @@
   <AcfElementGuid Guid="3fa34d3b-2b1b-4348-8c5a-6ca13dc4198d">
     <File>Generate_CRC.AcfMlge</File>
   </AcfElementGuid>
-  <AcfElementGuid Guid="8bfe5193-fbe8-4726-9c7d-5642fc39f5f3">
-    <File>RA_STRING_TO_ASCII_OUTPUT.acfmlge</File>
-  </AcfElementGuid>
   <AcfElementGuid Guid="98dfa7c0-8a6a-48a7-bfce-cc00ff44ae22">
     <File>Prog1.AcfMlge</File>
   </AcfElementGuid>
@@ -14,8 +11,5 @@
   </AcfElementGuid>
   <AcfElementGuid Guid="e428dcff-c0d6-4a21-ba1b-4c7703c5c3e7">
     <File>Generate_Bytes.AcfMlge</File>
-  </AcfElementGuid>
-  <AcfElementGuid Guid="f53c7c08-09ff-406c-b70a-f3b409835227">
-    <File>RA_STRING_TO_ASCII_OUTPUT_SAMPLE.acfmlge</File>
   </AcfElementGuid>
 </ProjectElements>

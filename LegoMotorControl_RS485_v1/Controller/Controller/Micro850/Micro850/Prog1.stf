@@ -1,7 +1,7 @@
 PROGRAM Prog1
 (* Config for AWT *)
 input.Channel:=5;
-input.Length:=7;
+input.Length:=9;
 input.Cancel:=false;
 (* Config for ARD *)
 readinput.Channel:=5;
@@ -26,28 +26,8 @@ motorA_move_to_upper := ANY_TO_BYTE(AND_MASK((SHR(motorA_move_to,8)),16#FF));
 motorB_move_to_lower := ANY_TO_BYTE(AND_MASK(motorB_move_to,16#FF));
 motorB_move_to_upper := ANY_TO_BYTE(AND_MASK((SHR(motorB_move_to,8)),16#FF));
 
-(*
-//RESET
-0x55 0xFF 0x1F 0x00 0x00 0x12 0x94
-0x55 0x01 0x1F 0x00 0x00 0x2F 0x83
-
-//A FW
-0x55 0xFF 0x01 0x00 0x00 0x4A 0xF6
-//A BW
-0x55 0xFF 0x02 0x00 0x00 0x13 0xA6
-//A STOP
-0x55 0xFF 0x03 0x00 0x00 0x24 0x96
-//B FW
-0x55 0xFF 0x04 0x00 0x00 0xA1 0x06
-//B BW
-0x55 0xFF 0x05 0x00 0x00 0x96 0x36
-//B STOP
-0x55 0xFF 0x06 0x00 0x00 0xCF 0x66
- *)
- 
 CASE SendCmd OF
-	1: 
-		(* 0x55 0xFF 0x01 0x00 0x00 0x4A 0xF6 *)
+	1:
 		(* Motor A Forward *)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
@@ -56,8 +36,9 @@ CASE SendCmd OF
 		CommandTest[5]:=motorA_move_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
 	2:
-		(* 0x55 0xFF 0x03 0x00 0x00 0x24 0x96 *)
 		(* Motor A BW*)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
@@ -66,8 +47,9 @@ CASE SendCmd OF
 		CommandTest[5]:= motorA_move_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	3:		
-		(* 0x55 0xFF 0x03 0x00 0x00 0x24 0x96 *)
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	3:
 		(* Motor A Stop *)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
@@ -76,8 +58,9 @@ CASE SendCmd OF
 		CommandTest[5]:=16#00;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	4:		
-		(* 0x55 0xFF 0x04 0x00 0x00 0xA1 0x06 *)
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	4:
 		(* Motor B Forward *)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
@@ -86,8 +69,9 @@ CASE SendCmd OF
 		CommandTest[5]:=motorB_move_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	5:		
-		(* 0x55 0xFF 0x05 0x00 0x00 0x96 0x36 *)
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	5:
 		(* Motor B BW *)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
@@ -96,8 +80,9 @@ CASE SendCmd OF
 		CommandTest[5]:=motorB_move_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	6:		
-		(* 0x55 0xFF 0x06 0x00 0x00 0xCF 0x66 *)
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	6:
 		(* Motor B Stop *)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
@@ -106,8 +91,9 @@ CASE SendCmd OF
 		CommandTest[5]:=16#00;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
-	7:		
-		(* 0x55 0xFF 0x07 0x00 0x00 0xF8 0x56 *)
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	7:
 		(* ReadCounts *)
 		CommandTest[1]:=16#55;
 		CommandTest[2]:=16#FF;
@@ -116,6 +102,8 @@ CASE SendCmd OF
 		CommandTest[5]:=16#00;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
 	8:
 		(* Motor A Move To Position *)
 		CommandTest[1]:=16#55;
@@ -125,6 +113,8 @@ CASE SendCmd OF
 		CommandTest[5]:=motorA_move_to_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
 	9:
 		(* Motor B Move To Position *)
 		CommandTest[1]:=16#55;
@@ -134,6 +124,19 @@ CASE SendCmd OF
 		CommandTest[5]:=motorB_move_to_upper;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	10:
+		(* Motor A & B Move To Position *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#09;
+		CommandTest[4]:=motorA_move_to_lower;
+		CommandTest[5]:=motorA_move_to_upper;
+		CommandTest[6]:=motorB_move_to_lower;
+		CommandTest[7]:=motorB_move_to_upper;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
 ELSE
 		CommandTest[1]:=16#00;
 		CommandTest[2]:=16#00;
@@ -142,6 +145,8 @@ ELSE
 		CommandTest[5]:=16#00;
 		CommandTest[6]:=16#00;
 		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
 		Start_COP:=FALSE;
 		Start_CRC:=FALSE;
 		Start_GenBytes:=FALSE;
@@ -153,11 +158,11 @@ Generate_CRC_1(COP_Special_1.output,Start_CRC);
 Start_CRC:=TRUE;
 Generate_Bytes_1(Generate_CRC_1.output,Start_GenBytes);
 Start_GenBytes:=TRUE;
-CommandTest[6]:=Generate_Bytes_1.upper_byte;
-CommandTest[7]:=Generate_Bytes_1.lower_byte;
+CommandTest[8]:=Generate_Bytes_1.upper_byte;
+CommandTest[9]:=Generate_Bytes_1.lower_byte;
 
 
-if(SendCmd<10) AND SendCmd<>0 THEN
+if(SendCmd<11) AND SendCmd<>0 THEN
 	sendCommand:=True;
 END_IF;
 
