@@ -1,19 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ProjectElements>
-  <AcfElementGuid Guid="2730fcc0-4cb1-47ce-a75f-b9b637223c65">
-    <File>getLEDPos.AcfMlge</File>
-  </AcfElementGuid>
   <AcfElementGuid Guid="3fa34d3b-2b1b-4348-8c5a-6ca13dc4198d">
     <File>Generate_CRC.AcfMlge</File>
   </AcfElementGuid>
-  <AcfElementGuid Guid="8bfe5193-fbe8-4726-9c7d-5642fc39f5f3">
-    <File>RA_STRING_TO_ASCII_OUTPUT.AcfMlge</File>
-  </AcfElementGuid>
   <AcfElementGuid Guid="98dfa7c0-8a6a-48a7-bfce-cc00ff44ae22">
-    <File>Main.AcfMlge</File>
-  </AcfElementGuid>
-  <AcfElementGuid Guid="9d1e69f5-55b0-41ad-8c29-cd6d923410f8">
-    <File>Solenoid.AcfMlge</File>
+    <File>Prog1.AcfMlge</File>
   </AcfElementGuid>
   <AcfElementGuid Guid="c6c75f74-64f0-4a40-8eb8-8e1092aba34a">
     <File>COP_Special.AcfMlge</File>
