@@ -1,0 +1,401 @@
+PROGRAM Main
+(* Config for AWT *)
+input.Channel:=5;
+input.Length:=9;
+input.Cancel:=false;
+(* Config for ARD *)
+readinput.Channel:=5;
+readinput.Length:=8;
+readinput.Cancel:=false;
+(* Config for ACB *)
+input_acb.Channel:=5;
+input_acb.TriggerType:=1;
+(* Config for ACL *)
+input_acl.Channel:=5;
+input_acl.RXBuffer:=TRUE;
+
+(* Checks how many LED is lighted*)
+(* Process position if there is only 1 LED*)
+IF TON_1.Q THEN
+led_test:=TRUE;
+END_IF;
+
+IF (led_test) THEN
+total_green:=0;
+led_mask:=1;
+FOR k := 0 TO 15 DO
+	led_masked:=AND_MASK(ANY_TO_DINT(Phone_Readout),(SHL(led_mask,k)));
+	IF (led_masked>0) THEN
+		total_green:=total_green+1;
+	END_IF;
+END_FOR;
+IF (total_green=1) THEN
+	getLEDPos_1(ANY_TO_DINT(Phone_Readout));
+	(*two_motors_run:=1;*)
+	(*Assume motorA is row, motorB is col*)
+	(* Remove when not debugging, will send actual values over*)
+	(*Change to motorA_move_to*)
+	IF (NOT(motorA_move_to=getLEDPos_1.outRow) OR NOT(motorB_move_to=getLEDPos_1.outColumn)) THEN
+		motorA_move_to:=getLEDPos_1.outRow;
+		motorB_move_to:=getLEDPos_1.outColumn;
+		SendCmd:=11;
+	END_IF;
+	state_wait_for_pos_reached:=TRUE;
+ELSIF(total_green=0) THEN
+	(* Not detected, move to home*)
+	motorA_move_to:=getLEDPos_1.outRow-10;
+	motorB_move_to:=getLEDPos_1.outColumn-10;
+END_IF;
+led_test:=FALSE;
+END_IF;
+
+IF((_IO_X1_AI_00>3000) AND (_IO_X1_AI_01>3000)) THEN
+	Pos_Reached:=TRUE;
+ELSE
+	Pos_Reached:=FALSE;
+END_IF;
+
+R_TRIG_5(Pos_Reached);
+
+IF(state_wait_for_pos_reached=TRUE)AND(R_TRIG_5.Q) THEN
+	Test_Solenoid:=TRUE;
+	state_wait_for_pos_reached:=FALSE;
+END_IF;
+
+(* Uncomment this code to allow when not debugging*)
+(*
+IF(TON_1.Q)AND(two_motors_run=1) THEN
+		two_motors_run:=two_motors_run+1;	
+		IF(two_motors_run=2) THEN
+			SendCmd:=8;
+		ELSIF(two_motors_run=3) THEN
+			SendCmd:=9;
+		ELSIF(two_motors_run=4)	THEN
+			SendCmd:=7;
+		ELSIF(two_motors_run=5) THEN
+			two_motors_run:=0;
+END_IF;
+*)
+
+motorA_move_lower := ANY_TO_BYTE(AND_MASK(motorA_move,16#FF));
+motorA_move_upper := ANY_TO_BYTE(AND_MASK((SHR(motorA_move,8)),16#FF));
+
+motorB_move_lower := ANY_TO_BYTE(AND_MASK(motorB_move,16#FF));
+motorB_move_upper := ANY_TO_BYTE(AND_MASK((SHR(motorB_move,8)),16#FF));
+
+motorA_move_to_lower := ANY_TO_BYTE(AND_MASK(motorA_move_to,16#FF));
+motorA_move_to_upper := ANY_TO_BYTE(AND_MASK((SHR(motorA_move_to,8)),16#FF));
+
+motorB_move_to_lower := ANY_TO_BYTE(AND_MASK(motorB_move_to,16#FF));
+motorB_move_to_upper := ANY_TO_BYTE(AND_MASK((SHR(motorB_move_to,8)),16#FF));
+
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+
+(*
+//RESET
+0x55 0xFF 0x1F 0x00 0x00 0x12 0x94
+0x55 0x01 0x1F 0x00 0x00 0x2F 0x83
+
+//A FW
+0x55 0xFF 0x01 0x00 0x00 0x4A 0xF6
+//A BW
+0x55 0xFF 0x02 0x00 0x00 0x13 0xA6
+//A STOP
+0x55 0xFF 0x03 0x00 0x00 0x24 0x96
+//B FW
+0x55 0xFF 0x04 0x00 0x00 0xA1 0x06
+//B BW
+0x55 0xFF 0x05 0x00 0x00 0x96 0x36
+//B STOP
+0x55 0xFF 0x06 0x00 0x00 0xCF 0x66
+ *)
+ 
+=======
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+CASE SendCmd OF
+	1:
+		(* Motor A Forward *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#01;
+		CommandTest[4]:=motorA_move_lower;
+		CommandTest[5]:=motorA_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	2:
+		(* Motor A BW*)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#02;
+		CommandTest[4]:= motorA_move_lower;
+		CommandTest[5]:= motorA_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+	3:		
+		(* 0x55 0xFF 0x03 0x00 0x00 0x24 0x96 *)
+=======
+	3:
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+		(* Motor A Stop *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#03;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+	4:		
+		(* 0x55 0xFF 0x04 0x00 0x00 0xA1 0x06 *)
+=======
+	4:
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+		(* Motor B Forward *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#04;
+		CommandTest[4]:=motorB_move_lower;
+		CommandTest[5]:=motorB_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+	5:		
+		(* 0x55 0xFF 0x05 0x00 0x00 0x96 0x36 *)
+=======
+	5:
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+		(* Motor B BW *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#05;
+		CommandTest[4]:=motorB_move_lower;
+		CommandTest[5]:=motorB_move_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+	6:		
+		(* 0x55 0xFF 0x06 0x00 0x00 0xCF 0x66 *)
+=======
+	6:
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+		(* Motor B Stop *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#06;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+	7:		
+		(* 0x55 0xFF 0x07 0x00 0x00 0xF8 0x56 *)
+=======
+	7:
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+		(* ReadCounts *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#07;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	8:
+		(* Motor A Move To Position *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#08;
+		CommandTest[4]:=motorA_move_to_lower;
+		CommandTest[5]:=motorA_move_to_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	9:
+		(* Motor B Move To Position *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#09;
+		CommandTest[4]:=motorB_move_to_lower;
+		CommandTest[5]:=motorB_move_to_upper;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	10:
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+		(* PID Output Max *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#0A;
+		CommandTest[4]:=max_speed;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+	11:
+		(* Motor A & B Move To Position *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#0B;
+=======
+		(* Motor A & B Move To Position *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#09;
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+		CommandTest[4]:=motorA_move_to_lower;
+		CommandTest[5]:=motorA_move_to_upper;
+		CommandTest[6]:=motorB_move_to_lower;
+		CommandTest[7]:=motorB_move_to_upper;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+	99:
+		(* Reset - all counts will go to 0 *)
+		CommandTest[1]:=16#55;
+		CommandTest[2]:=16#FF;
+		CommandTest[3]:=16#1F;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+=======
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+ELSE
+		CommandTest[1]:=16#00;
+		CommandTest[2]:=16#00;
+		CommandTest[3]:=16#00;
+		CommandTest[4]:=16#00;
+		CommandTest[5]:=16#00;
+		CommandTest[6]:=16#00;
+		CommandTest[7]:=16#00;
+		CommandTest[8]:=16#00;
+		CommandTest[9]:=16#00;
+		Start_COP:=FALSE;
+		Start_CRC:=FALSE;
+		Start_GenBytes:=FALSE;
+END_CASE;
+
+COP_Special_1(CommandTest,Start_COP);
+Start_COP:=TRUE;
+Generate_CRC_1(COP_Special_1.output,Start_CRC);
+Start_CRC:=TRUE;
+Generate_Bytes_1(Generate_CRC_1.output,Start_GenBytes);
+Start_GenBytes:=TRUE;
+CommandTest[8]:=Generate_Bytes_1.upper_byte;
+CommandTest[9]:=Generate_Bytes_1.lower_byte;
+
+
+<<<<<<< HEAD:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Main.stf
+if(SendCmd<12 OR SendCmd=99) AND SendCmd<>0 THEN
+=======
+if(SendCmd<11) AND SendCmd<>0 THEN
+>>>>>>> origin/master:LegoMotorControl_RS485_v1/Controller/Controller/Micro850/Micro850/Prog1.stf
+	sendCommand:=True;
+END_IF;
+
+source:=CommandTest;
+
+(* AWT - Sends command to PIC *)
+AWT_1(sendCommand,input,source);
+sendCommand:=False;
+SendCmd:=0;
+num:=AWT_1.NumChar;
+error:=AWT_1.Error;
+id:=AWT_1.ErrorID;
+
+
+(* ACB - Reads buffer *)
+ACB_1(TRUE, input_acb);
+(* Checks buffer = 8 char before reading *)
+if(ACB_1.Characters=8) THEN
+ReadTest:=True;
+ELSE
+END_IF;
+
+(* ARD - Read Motor Counts, this runs when Read_counts is TRUE*)
+ARD_1(ReadTest, readinput);
+ReadTest:=False;
+errorid2 := ard_1.ErrorID;
+des := ARD_1.Destination;
+error2 := ARD_1.Error;
+num2 := ard_1.NumChar;
+
+(* ACL - Clears buffer, currently not used *)
+ACL_1(clear_buffer,input_acl);
+
+(* Adds 2 bytes to get the motor counts *)
+motorA_Count :=  OR_MASK(( SHL(ANY_TO_DINT(des[4]),24)),OR_MASK(( SHL(ANY_TO_DINT(des[3]),16)),OR_MASK(( SHL(ANY_TO_DINT(des[2]),8)),ANY_TO_DINT(des[1]))));
+motorB_Count :=  OR_MASK(( SHL(ANY_TO_DINT(des[8]),24)),OR_MASK(( SHL(ANY_TO_DINT(des[7]),16)),OR_MASK(( SHL(ANY_TO_DINT(des[6]),8)),ANY_TO_DINT(des[5]))));
+(*motorB_Count :=  OR_MASK(( SHL(ANY_TO_DINT(des[4]),8)),ANY_TO_DINT(des[3]));*)
+
+(* Auto Reset Timer - Not used *)
+TON_1(reset,T#100ms);
+
+
+(*Self test loop - run with caution*)
+IF (stress_test) THEN
+	(*IF (TON_1.q) THEN
+		SendCmd:=7;*)
+	IF(TON_1.Q) THEN
+		two_motors_run:=two_motors_run+1;	
+		IF(two_motors_run=1) THEN
+			SendCmd:=8;
+			(*two_motors_run:=2;*)
+		ELSIF(two_motors_run=2) THEN
+			SendCmd:=9;
+			(*two_motors_run:=3;*)
+		ELSIF(two_motors_run=3)	THEN
+			SendCmd:=7;
+			(*two_motors_run:=1;*)
+		ELSIF(two_motors_run=4) THEN
+			two_motors_run:=0;
+		END_IF;
+
+	ELSE
+	R_TRIG_1(motorB_Count>800);
+	R_TRIG_2(motorB_Count<100);
+	R_TRIG_3(motorA_Count>900);
+	R_TRIG_4(motorA_Count<100);
+	IF R_TRIG_1.Q THEN
+		motorB_move_to:=0;
+		(*SendCmd:=9;*)
+	ELSIF R_TRIG_2.Q THEN
+		motorB_move_to:=900;
+		(*SendCmd:=9;*)
+	END_IF;
+	
+	IF R_TRIG_3.Q THEN
+		motorA_move_to:=50;
+		(*SendCmd:=8;*)
+	ELSIF R_TRIG_4.Q THEN
+		motorA_move_to:=950;
+		(*SendCmd:=8;*)
+	END_IF;
+	
+	END_IF;
+	
+	
+END_IF;
+
+reset:=NOT TON_1.Q;
+END_PROGRAM

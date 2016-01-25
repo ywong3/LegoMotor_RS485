@@ -7,24 +7,48 @@
     <DefaultRefreshRateMonitoring>100</DefaultRefreshRateMonitoring>
   </ConfigurationInfo>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.motorA_Count</FullName>
+    <FullName>Controller.Micro850.Micro850.Main.motorA_Count</FullName>
   </Variable>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.SendCmd</FullName>
+    <FullName>Controller.Micro850.Micro850.Main.motorB_Count</FullName>
   </Variable>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.motorA_move</FullName>
+    <FullName>Controller.Micro850.Micro850.Main.motorB_move_to</FullName>
   </Variable>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.motorB_Count</FullName>
+    <FullName>Controller.Micro850.Micro850.Main.motorA_move_to</FullName>
   </Variable>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.motorB_move</FullName>
+    <FullName>Controller.Micro850.Micro850.Main.max_speed</FullName>
   </Variable>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.motorB_move_to</FullName>
+    <FullName>Controller.Micro850.Micro850.Main.stress_test</FullName>
   </Variable>
   <Variable>
-    <FullName>Controller.Micro850.Micro850.Prog1.motorA_move_to</FullName>
+    <FullName>Controller.Micro850.Micro850.Main.two_motors_run</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Test_Solenoid</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Phone_Readout</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Main.total_green</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Main.state_wait_for_pos_reached</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Pos_Reached</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850.Main.SendCmd</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850._IO_X1_AI_00</FullName>
+  </Variable>
+  <Variable>
+    <FullName>Controller.Micro850.Micro850._IO_X1_AI_01</FullName>
   </Variable>
 </SpyListVars_0>

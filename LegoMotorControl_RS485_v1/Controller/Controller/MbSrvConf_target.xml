@@ -1,2 +1,7 @@
 <modbusServer Version="2.0">
+  <modbusRegister name="HOLDING_REGISTERS">
+    <mapping variable="Phone_Readout" parent="Micro850" dataType="UInt" address="400001" va="0x48a">
+      <MBVarInfo ElemType="UInt" SubElemType="Any" DataTypeSize="2" />
+    </mapping>
+  </modbusRegister>
 </modbusServer>
