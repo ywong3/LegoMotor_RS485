@@ -1,0 +1,24 @@
+FUNCTION_BLOCK getLEDPos
+(*Change the row and column to absolute position so it can be used directly *)
+CASE inputPos OF
+	1,2,4,8: row:=15;
+	16,32,64,128: row:=350;
+	256,512,1024,2048: row:=675;
+	4096,8192,16384,32768: row:=1000;
+ELSE
+	row:=10; (*more than 1 led*)
+END_CASE;
+
+CASE inputPos OF
+	1,16,256,4096: column:=1000;
+	2,32,512,8192: column:=675;
+	4,64,1024,16384: column:=350;
+	8,128,2048,32768: column:=25;
+ELSE
+	column:=20; (*more than 1 led*)
+END_CASE;
+
+outColumn := column;
+outRow := row;
+
+END_FUNCTION_BLOCK

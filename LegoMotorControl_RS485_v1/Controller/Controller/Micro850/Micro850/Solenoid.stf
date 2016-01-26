@@ -1,0 +1,18 @@
+PROGRAM Solenoid
+#info= QLD
+BOF
+
+
+(**)
+
+SOR  [0,1] (**) (**)  XIC  [1,0] (*Test_Solenoid*) (**)  FB  [2,0] (*TON*) (*TON_1*) ( (*IN:IN*)(**) (**)  , (*PT:PT*)(*TON_Solenoid*) (**) ; (*Q:Q*)(**) (**)  , (*ET:ET*)(**) (**) )  OTR  [5,0] (*Test_Solenoid*) (**)
+EOR [6,0]
+
+
+(**)
+
+SOR  [0,4] (**) (**)  XIC  [1,0] (*Test_Solenoid*) (**)  XIO  [2,0] (*TON_1.Q*) (*Q*)  OTE  [3,0] (*_IO_EM_DO_01*) (**)
+EOR [4,0]
+EOF
+#end_info
+END_PROGRAM
